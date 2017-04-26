@@ -1,6 +1,6 @@
 {
   "name": "kinesis-stream-consumer",
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.0-alpha.1",
   "description": "Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams",
   "author": "Byron du Preez",
   "license": "Apache-2.0",
