@@ -1,0 +1,16 @@
+{
+  "name": "kinesis-stream-consumer",
+  "version": "0.0.0-alpha.0",
+  "description": "Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams",
+  "author": "Byron du Preez",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=4.3.2"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "aws-sdk": "2.4.9"
+  },
+  "repository": "https://github.com/byron-dupreez/kinesis-stream-consumer"
+}
