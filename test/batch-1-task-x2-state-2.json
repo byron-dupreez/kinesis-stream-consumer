@@ -1,0 +1,59 @@
+{
+  "streamConsumerId": "K|TEST_Stream_DEV|sampleFunctionName:dev",
+  "shardOrEventID": "S|shardId-000000000012",
+  "messageStates": [],
+  "rejectedMessageStates": [
+    {
+      "md5s": {
+        "msg": "2f7d8e9f6ecb5cf5bc81f09074eb4340",
+        "rec": "d7448e3c47daeffddad63681cdd6b3c8",
+        "data": "994cf24214664dc6b6e2b7ca0e8645c9"
+      },
+      "eventID": "shardId-000000000012:49545115243490985018280067714973144582180062593244200900",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200900",
+      "id": "id1:ID-12|id2:7000",
+      "key": "k1:ABC|k2:10",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.000Z",
+      "ones": {
+        "TaskX": {
+          "name": "TaskX",
+          "state": {
+            "type": "Rejected",
+            "name": "Abandoned",
+            "reason": "Abandoned dead unusable task, since its root task is fully finalised and/or unusable"
+          },
+          "attempts": 66,
+          "total": 99,
+          "began": "2017-10-26T04:02:00.634Z",
+          "took": 1
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-26T04:02:00.634Z",
+          "took": 1
+        }
+      },
+      "discards": {
+        "discardRejectedMessage": {
+          "name": "discardRejectedMessage",
+          "state": {
+            "type": "Failed",
+            "error": "Error: Disabling Kinesis"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-26T05:01:42.016Z",
+          "took": 14
+        }
+      }
+    }
+  ],
+  "unusableRecordStates": []
+}

@@ -1,0 +1,368 @@
+{
+  "streamConsumerId": "K|TEST_Stream_DEV|sampleFunctionName:dev",
+  "shardOrEventID": "S|shardId-000000000003",
+  "messageStates": [
+    {
+      "md5s": {
+        "msg": "0d8a59433ff371fe483f739080024e01",
+        "rec": "a1bd16db97f9817c69f47fa526f436f5",
+        "data": "a708cd393f52738f7d03c3e4db83f6cf"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200909",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200909",
+      "id": "id1:ID-03|id2:7009",
+      "key": "k1:ABC|k2:19",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.009Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "5919be08d052254ea203dd60512d8000",
+        "rec": "501abd2c01818f0c7379a5b364bcbe5c",
+        "data": "a35c443f13baa019a63afa8ec001bf44"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200908",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200908",
+      "id": "id1:ID-03|id2:7008",
+      "key": "k1:ABC|k2:18",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.008Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "644b87ae9057b26ef9bf63b7a2a35870",
+        "rec": "93edb6eeb2d86493d8f1712bc75473e1",
+        "data": "cba4ab6e254b95d464771d514b3ab81a"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200907",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200907",
+      "id": "id1:ID-03|id2:7007",
+      "key": "k1:ABC|k2:17",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.007Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "17d5b0f0c4b0fef44e374ff00fe31544",
+        "rec": "a23c60937b2b101de520e782fe638dc6",
+        "data": "33218c5933bc107d1d045981ddcfc05d"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200906",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200906",
+      "id": "id1:ID-03|id2:7006",
+      "key": "k1:ABC|k2:16",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.006Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "8d578bb9f0ab235e17b59b6f45cc73ba",
+        "rec": "f95bef828c6122bc833be4b7f2f3e8c9",
+        "data": "b63d6496f0957bbb2dd629178ccb8204"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200905",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200905",
+      "id": "id1:ID-03|id2:7005",
+      "key": "k1:ABC|k2:15",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.005Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "62ab6e1216a7fb3a32ca0cf185566efa",
+        "rec": "b93316212e07f9e36b233c9f945928db",
+        "data": "bc55368b89f733a0e7cf29e8781ba963"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200904",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200904",
+      "id": "id1:ID-03|id2:7004",
+      "key": "k1:ABC|k2:14",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.004Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "14af2637c53c75a449b51b261401cb4a",
+        "rec": "8bbb2a66b7b93ea57cc5635790af8e79",
+        "data": "c9d5af1c1de32c44a918b0861660345b"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200903",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200903",
+      "id": "id1:ID-03|id2:7003",
+      "key": "k1:ABC|k2:13",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.003Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "dde78ee13349c994e1fc0310fa3dbf96",
+        "rec": "7bafadb1246a6ff817276ae4b6e9e784",
+        "data": "0ea3fd48bdaee4e614d4253bd7bbdddb"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200902",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200902",
+      "id": "id1:ID-03|id2:7002",
+      "key": "k1:ABC|k2:12",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.002Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "5b11190647df7456a3dd5d626b4423a1",
+        "rec": "77ea43b9df99be0adf2ddafd35ecdbeb",
+        "data": "6360d861b94fee0bd3c1523db9fc6fb0"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200901",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200901",
+      "id": "id1:ID-03|id2:7001",
+      "key": "k1:ABC|k2:11",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.001Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    },
+    {
+      "md5s": {
+        "msg": "eb3a9da459b2e8cee7fb1e328d9f6b13",
+        "rec": "b5361c55626ecdff795b3fbcf7f81fee",
+        "data": "3651923ade1cec22267173158ce8a5ae"
+      },
+      "eventID": "shardId-000000000003:49545115243490985018280067714973144582180062593244200900",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200900",
+      "id": "id1:ID-03|id2:7000",
+      "key": "k1:ABC|k2:10",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.000Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-10-24T07:34:10.083Z",
+          "took": 16
+        }
+      }
+    }
+  ],
+  "rejectedMessageStates": [],
+  "unusableRecordStates": []
+}

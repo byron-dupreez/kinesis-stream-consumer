@@ -1,0 +1,167 @@
+{
+  "Item": {
+    "streamConsumerId": "K|MyStream_DEV|my-function:dev",
+    "shardOrEventID": "S|shardId-333333333333",
+    "messageStates": [
+      {
+        "md5s": {
+          "msg": "a14ece0e875c4514ebd85cd71acc37af",
+          "rec": "817c55a8735c5f2a77dcd549f9b082f8",
+          "data": "7d9dc1356372f0aa1df201ce88a12251"
+        },
+        "eventID": "shardId-111111111111:49545115243490985018280067714973144582180062593244200961",
+        "eventSeqNo": "49545115243490985018280067714973144582180062593244200961",
+        "id": "id1:ID1|id2:1001",
+        "key": "k1:ABC|k2:10",
+        "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.001Z",
+        "ones": {
+          "processOne": {
+            "name": "processOne",
+            "executable": true,
+            "state": {
+              "name": "Completed",
+              "type": "Completed"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.868Z",
+            "took": 5
+          }
+        },
+        "alls": {
+          "processAll": {
+            "name": "processAll",
+            "executable": true,
+            "state": {
+              "name": "Completed",
+              "type": "Completed"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.870Z",
+            "took": 4
+          }
+        }
+      }
+    ],
+    "rejectedMessageStates": [
+      {
+        "md5s": {
+          "msg": "cac3b35341d588a3f4011c3b54293fca",
+          "rec": "3c713cddf0a1317f79777524c61bed3c",
+          "data": "2d8c0599862c04bf499894c5970c4bea"
+        },
+        "eventID": "shardId-222222222222:49545115243490985018280067714973144582180062593244200962",
+        "eventSeqNo": "49545115243490985018280067714973144582180062593244200962",
+        "id": "id1:ID1|id2:1002",
+        "key": "k1:ABC|k2:10",
+        "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.002Z",
+        "ones": {
+          "processOne": {
+            "name": "processOne",
+            "executable": true,
+            "state": {
+              "name": "Rejected",
+              "type": "Rejected",
+              "error": "Error: Twisted",
+              "reason": "We're NOT gonna take it!"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.869Z",
+            "took": 5
+          }
+        },
+        "alls": {
+          "processAll": {
+            "name": "processAll",
+            "executable": true,
+            "state": {
+              "name": "Completed",
+              "type": "Completed"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.870Z",
+            "took": 4
+          }
+        },
+        "discards": {
+          "discardRejectedMessage": {
+            "name": "discardRejectedMessage",
+            "executable": true,
+            "state": {
+              "name": "Completed",
+              "type": "Completed"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.876Z",
+            "took": 0
+          }
+        }
+      }
+    ],
+    "unusableRecordStates": [
+      {
+        "md5s": {
+          "rec": "7fe1c7677665d658d594f8b910c86050"
+        },
+        "reasonUnusable": "Bad apple",
+        "discards": {
+          "discardUnusableRecord": {
+            "name": "discardUnusableRecord",
+            "executable": true,
+            "state": {
+              "name": "Completed",
+              "type": "Completed"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.871Z",
+            "took": 3
+          }
+        }
+      },
+      {
+        "md5s": {
+          "rec": "008767703f50d625c752fedc8e6aedab",
+          "data": "fe71af8ad118796ea25eea8779a7cba3"
+        },
+        "eventID": "shardId-333333333333:49545115243490985018280067714973144582180062593244200963",
+        "eventSeqNo": "49545115243490985018280067714973144582180062593244200963",
+        "reasonUnusable": "Unparseable",
+        "discards": {
+          "discardUnusableRecord": {
+            "name": "discardUnusableRecord",
+            "executable": true,
+            "state": {
+              "name": "Completed",
+              "type": "Completed"
+            },
+            "attempts": 1,
+            "total": 1,
+            "began": "2017-09-28T04:38:31.871Z",
+            "took": 3
+          }
+        }
+      }
+    ],
+    "batchState": {
+      "alls": {
+        "processAll": {
+          "name": "processAll",
+          "executable": true,
+          "state": {
+            "name": "Completed",
+            "type": "Completed"
+          },
+          "attempts": 1,
+          "total": 1,
+          "began": "2017-09-28T04:38:31.870Z",
+          "took": 4
+        }
+      }
+    }
+  }
+}

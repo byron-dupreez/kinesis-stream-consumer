@@ -1,0 +1,46 @@
+{
+  "streamConsumerId": "K|TEST_Stream_DEV|sampleFunctionName:dev",
+  "shardOrEventID": "S|shardId-000000000013",
+  "messageStates": [
+    {
+      "md5s": {
+        "msg": "2d4dadb2751d4c7eec3352dbff17e0ce",
+        "rec": "fdeb06e8acaababf32b0989613bc25ac",
+        "data": "5018b9a86681b024c0af3586a386aa5e"
+      },
+      "eventID": "shardId-000000000013:49545115243490985018280067714973144582180062593244200900",
+      "eventSeqNo": "49545115243490985018280067714973144582180062593244200900",
+      "id": "id1:ID-13|id2:7000",
+      "key": "k1:ABC|k2:10",
+      "seqNo": "n1:1|n2:100|n3:10000000000000000000001|n4:2017-01-17T23:59:59.000Z",
+      "ones": {
+        "Task1": {
+          "name": "Task1",
+          "state": {
+            "type": "Failed",
+            "error": "Error: Failing process one task (1)"
+          },
+          "attempts": 6,
+          "total": 6,
+          "began": "2017-10-27T12:24:07.998Z",
+          "took": 6
+        }
+      },
+      "alls": {
+        "Task2": {
+          "name": "Task2",
+          "state": {
+            "type": "Failed",
+            "error": "Error: Failing process all task (1)"
+          },
+          "attempts": 6,
+          "total": 6,
+          "began": "2017-10-27T12:24:08.002Z",
+          "took": 3
+        }
+      }
+    }
+  ],
+  "rejectedMessageStates": [],
+  "unusableRecordStates": []
+}
