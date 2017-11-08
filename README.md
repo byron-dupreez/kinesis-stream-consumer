@@ -1,4 +1,4 @@
-# kinesis-stream-consumer v2.0.0-beta.1
+# kinesis-stream-consumer v2.0.0-beta.2
 
 Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams.
 
