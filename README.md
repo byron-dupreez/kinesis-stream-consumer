@@ -1,4 +1,4 @@
-# kinesis-stream-consumer v2.0.0-beta.3
+# kinesis-stream-consumer v2.0.0
 
 Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams.
 
@@ -8,7 +8,10 @@ Utilities for building robust AWS Lambda consumers of stream events from Amazon 
 - `kinesis-processing.js` module 
   - Utilities for configuring Kinesis stream processing, which configures and determines the processing behaviour of a 
     Kinesis stream consumer
-
+- `kinesis-identify.js` module
+  - Utilities and functions to be used by a Kinesis stream consumer to identify messages
+- `kpl-deagg-async.js` module
+  -  Copy of `kpl-deagg.js` with a new promise-returning `deaggregateAsync` function based on `deaggregate` function  
 ## Dependencies
 - `aws-stream-consumer-core` module - Common AWS stream consumer libraries used by this Kinesis stream consumer module
 

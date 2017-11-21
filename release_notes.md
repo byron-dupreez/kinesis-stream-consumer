@@ -1,5 +1,8 @@
 ## Changes
 
+### 2.0.0
+- More updates to `README.md`
+
 ### 2.0.0-beta.3
 - Minor changes to `kinesis-consumer` module:
   - Renamed `generateSettings` argument to `createSettings`
