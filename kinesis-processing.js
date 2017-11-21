@@ -46,7 +46,7 @@ const LAST_RESORT_KEY = 'LAST_RESORT_KEY';
  * @module aws-stream-consumer-core/stream-processing-config
  * @author Byron du Preez
  */
-exports._ = '_'; //IDE workaround
+exports._$_ = '_$_'; //IDE workaround
 
 exports.LAST_RESORT_KEY = LAST_RESORT_KEY;
 
@@ -283,10 +283,8 @@ function getDefaultKinesisStreamProcessingSettings(options) {
 
   const defaultSettings = {
     // Configurable processing functions
-    extractMessagesFromRecord: kplEncoded ?
-      extractMessagesFromKplEncodedRecord : extractMessagesFromKinesisRecord,
-    extractMessageFromRecord: kplEncoded ?
-      extractJsonMessageFromKplUserRecord : extractJsonMessageFromKinesisRecord,
+    extractMessagesFromRecord: kplEncoded ? extractMessagesFromKplEncodedRecord : extractMessagesFromKinesisRecord,
+    extractMessageFromRecord: kplEncoded ? extractJsonMessageFromKplUserRecord : extractJsonMessageFromKinesisRecord,
     generateMD5s: kinesisIdentify.generateKinesisMD5s,
     resolveEventIdAndSeqNos: kinesisIdentify.resolveKinesisEventIdAndSeqNos,
     resolveMessageIdsAndSeqNos: kinesisIdentify.resolveKinesisMessageIdsAndSeqNos,

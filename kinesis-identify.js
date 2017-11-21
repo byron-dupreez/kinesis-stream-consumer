@@ -16,7 +16,7 @@ const FatalError = errors.FatalError;
  * @module kinesis-stream-consumer/kinesis-identify
  * @author Byron du Preez
  */
-exports._ = '_'; //IDE workaround
+exports._$_ = '_$_'; //IDE workaround
 
 exports.generateKinesisMD5s = generateKinesisMD5s;
 exports.resolveKinesisEventIdAndSeqNos = resolveKinesisEventIdAndSeqNos;

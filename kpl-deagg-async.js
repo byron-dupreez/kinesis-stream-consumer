@@ -44,7 +44,7 @@ let AggregatedRecord;
 //   });
 // };
 
-exports._ = '_'; //IDE workaround
+exports._$_ = '_$_'; //IDE workaround
 
 /** asynchronous deaggregation interface */
 exports.deaggregateAsync = function deaggregateAsync(kinesisRecord, computeChecksums) {
