@@ -1,4 +1,4 @@
-# kinesis-stream-consumer v2.0.0
+# kinesis-stream-consumer v2.0.1
 
 Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams.
 
@@ -22,7 +22,7 @@ stream more robust for an AWS Lambda stream consumer by providing solutions to a
 consumption issues (see `Background` section of `aws-stream-consumer-core/README.md`). 
 
 ## Installation
-This module is exported as a [Node.js](https://nodejs.org/) module.
+This module is exported as a [Node.js](https://nodejs.org) module.
 
 Using npm:
 ```bash
@@ -218,7 +218,7 @@ console.log(`DEBUG logMessagesToS3.name = ${logMessagesToS3.name}`);
 ```
 
 ## Unit tests
-This module's unit tests were developed with and must be run with [tape](https://www.npmjs.com/package/tape). The unit tests have been tested on [Node.js v4.3.2](https://nodejs.org/en/blog/release/v4.3.2/).  
+This module's unit tests were developed with and must be run with [tape](https://www.npmjs.com/package/tape). The unit tests have been tested on [Node.js v6.10.3](https://nodejs.org/en/blog/release/v6.10.3).  
 
 Install tape globally if you want to run multiple tests at once:
 ```bash
