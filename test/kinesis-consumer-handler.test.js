@@ -175,18 +175,18 @@ function sampleExecuteAllAsync(ms, mustRejectWithError, callback) {
 
 test('generateHandlerFunction simulating successful result', t => {
   // Setup the task definitions
-  function generateProcessOneTaskDefs() {
+  function defineProcessOneTaskDefs() {
     const taskDef1 = TaskDef.defineTask('Task1', sampleExecuteOneAsync(5, undefined));
     return [taskDef1];
   }
 
-  function generateProcessAllTaskDefs() {
+  function defineProcessAllTaskDefs() {
     const taskDef2 = TaskDef.defineTask('Task2', sampleExecuteAllAsync(5, undefined));
     return [taskDef2];
   }
 
   // Create a context and configure it with a dummy Kinesis instance
-  function generateContext() {
+  function createContext() {
     const context = {};
     const kinesisError = new Error('Planned Kinesis Error');
     context.kinesis = dummyKinesis(t, 'Test generateHandlerFunction', kinesisError);
@@ -220,8 +220,8 @@ test('generateHandlerFunction simulating successful result', t => {
       successMsg: 'Processed test stream event'
     };
 
-    const handler = streamConsumer.generateHandlerFunction(generateContext, undefined, defaultOptions,
-      generateProcessOneTaskDefs, generateProcessAllTaskDefs, opts);
+    const handler = streamConsumer.generateHandlerFunction(createContext, undefined, defaultOptions,
+      defineProcessOneTaskDefs, defineProcessAllTaskDefs, opts);
 
     // Wrap the callback-based AWS Lambda handler function as a Promise returning function purely for testing purposes
     const handlerWithPromise = Promises.wrap(handler);
@@ -259,18 +259,18 @@ test('generateHandlerFunction simulating failure', t => {
   const kinesisError = new Error('Planned Kinesis Error');
 
   // Setup the task definitions
-  function generateProcessOneTaskDefs() {
+  function defineProcessOneTaskDefs() {
     const taskDef1 = TaskDef.defineTask('Task1', sampleExecuteOneAsync(5, taskError));
     return [taskDef1];
   }
 
-  function generateProcessAllTaskDefs() {
+  function defineProcessAllTaskDefs() {
     const taskDef2 = TaskDef.defineTask('Task2', sampleExecuteAllAsync(5, undefined));
     return [taskDef2];
   }
 
   // Create a context and configure it with a dummy Kinesis instance
-  function generateContext() {
+  function createContext() {
     const context = {};
     context.kinesis = dummyKinesis(t, 'Test generateHandlerFunction', kinesisError);
     context.dynamoDBDocClient = mockDynamoDBDocClient(t, 'Test A', 5, {
@@ -303,8 +303,8 @@ test('generateHandlerFunction simulating failure', t => {
       successMsg: 'Processed test stream event'
     };
 
-    const handler = streamConsumer.generateHandlerFunction(generateContext, undefined, defaultOptions,
-      generateProcessOneTaskDefs, generateProcessAllTaskDefs, opts);
+    const handler = streamConsumer.generateHandlerFunction(createContext, undefined, defaultOptions,
+      defineProcessOneTaskDefs, defineProcessAllTaskDefs, opts);
 
     // Wrap the callback-based AWS Lambda handler function as a Promise returning function purely for testing purposes
     const handlerWithPromise = Promises.wrap(handler);
@@ -344,18 +344,18 @@ test('generateHandlerFunction simulating failure during configuration with missi
   const kinesisError = new Error('Planned Kinesis Error');
 
   // Setup the task definitions
-  function generateProcessOneTaskDefs() {
+  function defineProcessOneTaskDefs() {
     const taskDef1 = TaskDef.defineTask('Task1', sampleExecuteOneAsync(5, taskError));
     return [taskDef1];
   }
 
-  function generateProcessAllTaskDefs() {
+  function defineProcessAllTaskDefs() {
     const taskDef2 = TaskDef.defineTask('Task2', sampleExecuteAllAsync(5, undefined));
     return [taskDef2];
   }
 
   // Create a context and configure it with a dummy Kinesis instance
-  function generateContext() {
+  function createContext() {
     const context = {};
     context.kinesis = dummyKinesis(t, 'Test generateHandlerFunction', kinesisError);
     context.dynamoDBDocClient = mockDynamoDBDocClient(t, 'Test A', 5, {
@@ -393,8 +393,8 @@ test('generateHandlerFunction simulating failure during configuration with missi
       successMsg: 'Processed test stream event'
     };
 
-    const handler = streamConsumer.generateHandlerFunction(generateContext, undefined, () => defaultOptions,
-      generateProcessOneTaskDefs, generateProcessAllTaskDefs, opts);
+    const handler = streamConsumer.generateHandlerFunction(createContext, undefined, () => defaultOptions,
+      defineProcessOneTaskDefs, defineProcessAllTaskDefs, opts);
 
     // Wrap the callback-based AWS Lambda handler function as a Promise returning function purely for testing purposes
     const handlerWithPromise = Promises.wrap(handler);

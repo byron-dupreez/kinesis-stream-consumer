@@ -101,8 +101,8 @@ function configureStreamConsumer(context, settings, options, event, awsContext) 
  * @param {undefined|function(): (Object|StreamConsumerContext|StreamProcessing|StandardContext)} createContext - a optional function that will be used to create the initial context to be configured & used
  * @param {undefined|StreamConsumerSettings|function(): StreamConsumerSettings} [createSettings] - an optional function that will be used to generate initial stream consumer settings to use; OR optional module-scoped stream consumer settings from which to copy initial stream consumer settings to use
  * @param {undefined|StreamConsumerOptions|function(): StreamConsumerOptions} [createOptions] - an optional function that will be used to generate initial stream consumer options to use; OR optional module-scoped stream consumer options from which to copy initial stream consumer options to use
- * @param {undefined|function(): TaskDef[]} [defineProcessOneTasks] - an "optional" function that must generate a new list of "processOne" task definitions, which will be subsequently used to generate the tasks to be executed on each message independently
- * @param {undefined|function(): TaskDef[]} [defineProcessAllTasks] - an "optional" function that must generate a new list of "processAll" task definitions, which will be subsequently used to generate the tasks to be executed on all of the event's messages collectively
+ * @param {undefined|function(): ProcessOneTaskDef[]} [defineProcessOneTasks] - an "optional" function that must generate a new list of "processOne" task definitions, which will be subsequently used to generate the tasks to be executed on each message independently
+ * @param {undefined|function(): ProcessAllTaskDef[]} [defineProcessAllTasks] - an "optional" function that must generate a new list of "processAll" task definitions, which will be subsequently used to generate the tasks to be executed on all of the event's messages collectively
  * @param {Object|undefined} [opts] - optional options to use to configure the generated handler function
  * @param {LogLevel|string|undefined} [opts.logEventResultAtLogLevel] - an optional log level at which to log the AWS stream event and result; if log level is undefined or invalid, then logs neither
  * @param {string|undefined} [opts.failureMsg] - an optional message to log at error level on failure
@@ -187,9 +187,9 @@ function generateHandlerFunction(createContext, createSettings, createOptions, d
  * the event.
  *
  * @param {KinesisEvent|*} event - the AWS Kinesis stream event (or any other garbage passed as an event)
- * @param {TaskDef[]|undefined} [processOneTaskDefsOrNone] - an "optional" list of "processOne" task definitions that
+ * @param {ProcessOneTaskDef[]|undefined} [processOneTaskDefsOrNone] - an "optional" list of "processOne" task definitions that
  * will be used to generate the tasks to be executed on each message independently
- * @param {TaskDef[]|undefined} [processAllTaskDefsOrNone] - an "optional" list of "processAll" task definitions that
+ * @param {ProcessAllTaskDef[]|undefined} [processAllTaskDefsOrNone] - an "optional" list of "processAll" task definitions that
  * will be used to generate the tasks to be executed on all of the event's messages collectively
  * @param {StreamConsumerContext} context - the context to use with Kinesis stream consumer configuration
  * @returns {Promise.<Batch|BatchError>} a promise that will resolve with the batch processed or reject with an error

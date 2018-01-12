@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.0.2
+- Updated `aws-stream-consumer-core` dependency to version 2.0.5
+- Minor fixes to JsDoc comments
+
 ### 2.0.1
 - Updated `aws-core-utils` dependency to version 7.0.11
 - Updated `aws-stream-consumer-core` dependency to version 2.0.4
