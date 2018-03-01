@@ -1,5 +1,13 @@
 ## Changes
 
+### 2.0.3
+- Updated `aws-core-utils` dependency to version 7.0.12
+- Updated `aws-stream-consumer-core` dependency to version 2.0.6
+- Updated `core-functions` dependency to version 3.0.22
+- Updated `logging-utils` dependency to version 4.0.22
+- Updated `task-utils` dependency to version 7.0.4
+- Updated `aws-sdk` dev dependency to version 2.190.0
+
 ### 2.0.2
 - Updated `aws-stream-consumer-core` dependency to version 2.0.5
 - Minor fixes to JsDoc comments
