@@ -1,4 +1,4 @@
-# kinesis-stream-consumer v2.1.1
+# kinesis-stream-consumer v2.1.2
 
 Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams.
 
@@ -61,6 +61,8 @@ const logMessagesToS3TaskDef = TaskDef.defineTask(logMessagesToS3.name, logMessa
 
 const processOneTaskDefs = [saveMessageTaskDef]; // ... and/or more "process one" task definitions
 const processAllTaskDefs = [logMessagesToS3TaskDef]; // ... and/or more "process all" task definitions
+
+assert(processOneTaskDefs && processAllTaskDefs);
 ```
 
 * Generate an AWS Lambda handler function that will configure and process stream events according to the given settings & options
@@ -92,6 +94,8 @@ exports.handler = streamConsumer.generateHandlerFunction(context, settings, opti
 // OR ... with optional arguments included
 exports.handler = streamConsumer.generateHandlerFunction(context, settings, options, processOneTaskDefs, processAllTaskDefs, 
   LogLevel.DEBUG, 'Failed to do Xyz', 'Finished doing Xyz');
+
+assert(Settings && settings2);
 ```
 
 * ALTERNATIVELY, configure your own AWS Lambda handler function using the following functions:
@@ -111,6 +115,8 @@ const streamConsumer = require('kinesis-stream-consumer');
 // ...
 
 const promise = streamConsumer.processStreamEvent(awsEvent, processOneTaskDefs, processAllTaskDefs, context);
+
+assert(promise);
 ```
 
 * Within your custom task execute function(s), update the message's (or messages') tasks' and/or sub-tasks' states
@@ -237,4 +243,4 @@ $ tape test/*.js
 See the [package source](https://github.com/byron-dupreez/kinesis-stream-consumer) for more details.
 
 ## Changes
-See [release_notes.md](./release_notes.md)
+See [CHANGES.md](CHANGES.md)
