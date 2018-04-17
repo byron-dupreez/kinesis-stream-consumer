@@ -1,5 +1,8 @@
 ## Changes
 
+### 2.1.3
+- Updated dependencies
+
 ### 2.1.2
 - Added `.npmignore`
 - Renamed `release_notes.md` to `CHANGES.md`
