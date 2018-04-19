@@ -1,5 +1,8 @@
 ## Changes
 
+### 2.1.4
+- Updated dependencies
+
 ### 2.1.3
 - Updated dependencies
 
