@@ -1,6 +1,6 @@
 {
   "name": "kinesis-stream-consumer",
-  "version": "2.1.6",
+  "version": "2.1.9",
   "description": "Utilities for building robust AWS Lambda consumers of stream events from Amazon Web Services (AWS) Kinesis streams",
   "author": "Byron du Preez",
   "license": "Apache-2.0",
@@ -12,17 +12,17 @@
     "test": "tape ./test/*.test.js"
   },
   "dependencies": {
-    "aws-core-utils": "8.1.2",
-    "aws-stream-consumer-core": "2.1.6",
+    "aws-core-utils": "8.1.3",
+    "aws-stream-consumer-core": "2.1.9",
     "aws-kinesis-agg": "3.0.0",
-    "core-functions": "3.0.24",
+    "core-functions": "3.0.25",
     "deep-equal": "1.0.1",
     "lodash.flatmap": "4.5.0",
     "lodash.groupby": "4.6.0",
     "lodash.uniq": "4.5.0",
-    "logging-utils": "4.0.24",
+    "logging-utils": "4.0.25",
     "protobufjs": "6.6.3",
-    "task-utils": "7.0.6",
+    "task-utils": "7.0.7",
     "underscore": "1.8.3"
   },
   "devDependencies": {

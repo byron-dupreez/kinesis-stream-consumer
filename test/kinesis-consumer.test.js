@@ -41,6 +41,7 @@ const TaskDef = require('task-utils/task-defs');
 const core = require('task-utils/core');
 const StateType = core.StateType;
 // const ReturnMode = core.ReturnMode;
+const FinalisedError = core.FinalisedError;
 
 const taskStates = require('task-utils/task-states');
 // const TaskState = taskStates.TaskState;
@@ -71,6 +72,7 @@ const Numbers = require('core-functions/numbers');
 
 const errors = require('core-functions/errors');
 const TimeoutError = errors.TimeoutError;
+const FatalError = errors.FatalError;
 
 const copying = require('core-functions/copying');
 const copy = copying.copy;
@@ -186,13 +188,14 @@ function dummyKinesis(t, prefix, error) {
 
 function sampleExecuteOneAsync(delayMs, mustRejectWithError, callback) {
   function executeOneAsync(message, batch, context) {
+    const task = this;
     const state = batch.states.get(message);
     const messageId = state.id ? state.id : state.eventID;
     console.log(`*** ${executeOneAsync.name} started processing message (${messageId})`);
     return Promises.delay(delayMs).then(
       () => {
         if (typeof callback === 'function') {
-          callback(message, batch, context);
+          callback.call(task, message, batch, context);
         }
         if (!mustRejectWithError) {
           console.log(`*** ${executeOneAsync.name} completed message (${messageId})`);
@@ -206,7 +209,7 @@ function sampleExecuteOneAsync(delayMs, mustRejectWithError, callback) {
       err => {
         console.error(`*** ${executeOneAsync.name} hit UNEXPECTED error on message (${messageId})`, err);
         if (typeof callback === 'function') {
-          callback(message, batch, context);
+          callback.call(task, message, batch, context);
         }
         if (!mustRejectWithError) {
           console.log(`*** ${executeOneAsync.name} "completed" message (${messageId})`);
@@ -3190,6 +3193,291 @@ test('processStreamEvent with 1 message and triggered finalising timeout promise
 
             t.end();
           }
+        })
+        .catch(err => {
+          t.fail(`processStreamEvent should NOT have failed (${stringify(err)})`, err);
+          t.end(err);
+        });
+
+    } catch (err) {
+      t.fail(`processStreamEvent should NOT have failed in try-catch (${stringify(err)})`, err);
+      t.end(err);
+    }
+
+  } finally {
+    process.env.AWS_REGION = undefined;
+    process.env.STAGE = undefined;
+  }
+});
+
+// =====================================================================================================================
+// processStreamEvent with 1 message and triggered processing timeout promise, must resubmit incomplete message
+// =====================================================================================================================
+
+test('processStreamEvent with 1 message and triggered processing timeout promise, must resubmit incomplete message', t => {
+  function validateUpdateParams(t, params) {
+    t.fail(`processStreamEvent must NOT call DynamoDB update with ${stringify(params)}`);
+  }
+
+  function validatePutParams(t, params) {
+    const expectedTableName = 'TEST_StreamConsumerBatchState_DEV';
+    const expectedStreamConsumerId = 'K|TEST_Stream_DEV|sampleFunctionName:dev';
+    const expectedShardOrEventId = 'S|shardId-000000000016';
+    const item = params.Item;
+    t.equal(params.TableName, expectedTableName, `params.TableName must be ${expectedTableName}`);
+    t.equal(item.streamConsumerId, expectedStreamConsumerId, `item.streamConsumerId must be ${expectedStreamConsumerId}`);
+    t.equal(item.shardOrEventID, expectedShardOrEventId, `item.shardOrEventID must be ${expectedShardOrEventId}`);
+    t.equal(item.messageStates.length, 1, `item.messageStates.length must be 1`);
+    t.equal(item.rejectedMessageStates.length, 0, `item.rejectedMessageStates.length must be 0`);
+    t.equal(item.unusableRecordStates.length, 0, `item.unusableRecordStates.length must be 0`);
+  }
+
+  try {
+    // Simulate a region in AWS_REGION for testing (if none already exists)
+    const region = setRegionStageAndDeleteCachedInstances('us-west-2', undefined);
+
+    const n = 1;
+    const u = 0;
+
+    // Generate a sample AWS event
+    const partitionKey = '1025bb79169cfe3977ea6eb1fb0ecd66';
+    const event = generateEvent(16, n, region, {unusables: u}, partitionKey);
+
+    // Generate a sample AWS context
+    const maxTimeInMillis = 300;
+    const awsContext = sampleAwsContext('1.0.1', 'dev', maxTimeInMillis);
+
+    // Setup the task definitions
+    const taskDef1 = TaskDef.defineTask('Task1', sampleExecuteOneAsync(15, new Error('Previously failed Task1')));
+    const taskDef2 = TaskDef.defineTask('Task2', sampleExecuteAllAsync(15, new Error('Previously failed Task2')));
+    const processOneTaskDefs = [taskDef1];
+    const processAllTaskDefs = [taskDef2];
+
+    // Process the event
+    try {
+      const context = createContext(undefined, undefined, undefined, event, awsContext);
+
+      // Force a processing phase timeout at 1% of 300 ms, i.e. after 3 ms, i.e. before process one & all tasks can complete
+      context.streamProcessing.timeoutAtPercentageOfRemainingTime = 0.01;
+
+      // Simulate a previous run, which has taken both tasks to 6 (i.e. one before max)
+      const getResult = undefined; //copy(require('./batch-1-tasks-failed-state-3.json'), deep);
+      const updateResult = {};
+      configureKinesisAndDynamoDBDocClient(t, context, prefix, undefined, 5, {
+        get: {result: getResult},
+        put: {result: undefined, validateArgs: validatePutParams},
+        update: {result: updateResult, validateArgs: validateUpdateParams}
+      });
+
+      const promise = consumer.processStreamEvent(event, processOneTaskDefs, processAllTaskDefs, context);
+
+      if (Promises.isPromise(promise)) {
+        t.pass(`processStreamEvent returned a promise`);
+      } else {
+        t.fail(`processStreamEvent should have returned a promise`);
+      }
+
+      t.equal(context.region, region, `context.region must be ${region}`);
+      t.equal(context.stage, 'dev', `context.stage must be dev`);
+      t.equal(context.awsContext, awsContext, `context.awsContext must be given awsContext`);
+
+      promise
+        .then(batch => {
+          t.fail(`processStreamEvent must NOT resolve with batch (${batch.shardOrEventID}) ${stringify(batch)}`);
+          t.end();
+        })
+        .catch(err => {
+          t.pass(`processStreamEvent must reject with error (${err})`);
+
+          const batch = err.batch;
+          const messages = batch.messages;
+          const batchState = batch.states.get(batch);
+
+          t.equal(messages.length, 1, `processStreamEvent batch must have ${1} messages`);
+          t.equal(batch.unusableRecords.length, u, `processStreamEvent batch must have ${u} unusable records`);
+          t.equal(batch.undiscardedUnusableRecords.length, u, `processStreamEvent batch must have ${u} undiscarded unusable records`);
+          t.equal(batch.rejectedMessages.length, 0, `processStreamEvent batch must have ${0} rejected messages`);
+          t.equal(batch.undiscardedRejectedMessages.length, 0, `processStreamEvent batch must have ${0} undiscarded rejected messages`);
+          t.equal(batch.incompleteMessages.length, 1, `processStreamEvent batch must have ${1} incomplete messages`);
+
+          t.ok(err instanceof TimeoutError, `processStreamEvent error must be an instance of TimeoutError`);
+          const expectedErrorMsg = 'Ran out of time to complete processBatch';
+          const expectedErrorMsgPlanB = 'Ran out of time to complete finaliseBatch';
+
+          const msgState = batch.states.get(messages[0]);
+
+          const msgTask1 = msgState.ones.Task1;
+          const msgTask2 = msgState.alls.Task2;
+          const batchTask2 = batchState.alls.Task2;
+
+          const batchTask2ErrorMsg = batchTask2.error.message;
+
+          checkMessagesTasksStates(t, batch, messages, TimedOut, TimedOut);
+          checkBatchTaskStates(t, batchState, 'alls', 'Task2', [''], [false], [TimedOut]);
+
+          // All attempts MUST be reset back to zero, since timed out
+          t.equal(msgTask1.attempts, 0, `Task1 attempts must be 0`);
+          t.equal(msgTask2.attempts, 0, `Task2 attempts must be 0`);
+          t.equal(batchTask2.attempts, 0, `Batch Task2 attempts must be 0`);
+
+          checkBatchInitiatingTaskStates(t, batchState, [true, true, true, true, true], [Completed, Completed, Completed, Completed, Completed]);
+          checkBatchProcessingTaskStates(t, batchState, [false, false, false, true], [TimedOut, TimedOut, TimedOut, Completed]);
+
+          if (batchState.finalising.finaliseBatch.state.type !== StateType.TimedOut) {
+            t.ok(err.message.startsWith(expectedErrorMsg), `processStreamEvent error (${err}) must start with ${expectedErrorMsg}`);
+
+            t.ok(batchTask2ErrorMsg.startsWith(expectedErrorMsg),
+              `Batch Task2 error (${batchTask2.error}) must start with ${expectedErrorMsg}`);
+
+            checkBatchFinalisingTaskStates(t, batchState, [false, true, true, true], [Failed, Completed, Completed, Completed]);
+
+            t.end();
+
+          } else {
+            // Sometimes due to timing differences, the finaliseBatch will also time out regardless of the settings above
+            t.ok(err.message.startsWith(expectedErrorMsg) || err.message.startsWith(expectedErrorMsgPlanB),
+              `*** PLAN B ***: processStreamEvent error (${err}) must start with ${expectedErrorMsg} or ${expectedErrorMsgPlanB}`);
+
+            t.ok(batchTask2ErrorMsg.startsWith(expectedErrorMsg) || batchTask2ErrorMsg.startsWith(expectedErrorMsgPlanB),
+              `*** PLAN B ***: Batch Task2 error (${batchTask2.error}) must start with ${expectedErrorMsg} or ${expectedErrorMsgPlanB}`);
+
+            checkBatchFinalisingTaskStates(t, batchState, [[false, false], [true, false], [true, false], [true, false]], [[Failed, TimedOut], [Completed, TimedOut], [Completed, TimedOut], [Completed, TimedOut]]);
+
+            t.end();
+          }
+        })
+        .catch(err => {
+          t.fail(`processStreamEvent should NOT have failed (${stringify(err)})`, err);
+          t.end(err);
+        });
+
+    } catch (err) {
+      t.fail(`processStreamEvent should NOT have failed in try-catch (${stringify(err)})`, err);
+      t.end(err);
+    }
+
+  } finally {
+    process.env.AWS_REGION = undefined;
+    process.env.STAGE = undefined;
+  }
+});
+
+// =====================================================================================================================
+// processStreamEvent with 1 message and with a FinalisedError failure, must raise a FatalError
+// =====================================================================================================================
+
+test('processStreamEvent with 1 message and with a FinalisedError failure, must raise a FatalError', t => {
+  function validateUpdateParams(t, params) {
+    t.fail(`processStreamEvent must NOT call DynamoDB update with ${stringify(params)}`);
+  }
+
+  function validatePutParams(t, params) {
+    const expectedTableName = 'TEST_StreamConsumerBatchState_DEV';
+    const expectedStreamConsumerId = 'K|TEST_Stream_DEV|sampleFunctionName:dev';
+    const expectedShardOrEventId = 'S|shardId-000000000017';
+    const item = params.Item;
+    t.equal(params.TableName, expectedTableName, `params.TableName must be ${expectedTableName}`);
+    t.equal(item.streamConsumerId, expectedStreamConsumerId, `item.streamConsumerId must be ${expectedStreamConsumerId}`);
+    t.equal(item.shardOrEventID, expectedShardOrEventId, `item.shardOrEventID must be ${expectedShardOrEventId}`);
+    t.equal(item.messageStates.length, 1, `item.messageStates.length must be 1`);
+    t.equal(item.rejectedMessageStates.length, 0, `item.rejectedMessageStates.length must be 0`);
+    t.equal(item.unusableRecordStates.length, 0, `item.unusableRecordStates.length must be 0`);
+  }
+
+  function exec1(message, batch, context) {
+    const task = this;
+    console.log(`*** executing Task1`);
+    const subTask1a = task.getSubTask('SubTask1a');
+    const subTask1b = task.getSubTask('SubTask1b');
+    subTask1a.complete(`Force sub-task to be completed`);
+    return subTask1a.execute(message, batch, context).then(() => {
+      return subTask1b.execute(message, batch, context);
+    });
+  }
+
+  try {
+    // Simulate a region in AWS_REGION for testing (if none already exists)
+    const region = setRegionStageAndDeleteCachedInstances('us-west-2', undefined);
+
+    const n = 1;
+    const u = 0;
+
+    // Generate a sample AWS event
+    const partitionKey = '1025bb79169cfe3977ea6eb1fb0ecd66';
+    const event = generateEvent(17, n, region, {unusables: u}, partitionKey);
+
+    // Generate a sample AWS context
+    const maxTimeInMillis = 1200000;
+    const awsContext = sampleAwsContext('1.0.1', 'dev', maxTimeInMillis);
+
+    // Setup the task definitions
+    const taskDef1 = TaskDef.defineTask('Task1', sampleExecuteOneAsync(5, undefined, exec1));
+    // noinspection JSUnusedLocalSymbols
+    const subTaskDef1a = taskDef1.defineSubTask('SubTask1a', sampleExecuteOneAsync(6, undefined,
+      (message, batch, context) => {console.log(`*** executing SubTask1a`);}));
+
+    // noinspection JSUnusedLocalSymbols
+    const subTaskDef1b = taskDef1.defineSubTask('SubTask1b', sampleExecuteOneAsync(7, undefined,
+      (message, batch, context) => {console.log(`*** executing SubTask1b`);}));
+
+    const taskDef2 = TaskDef.defineTask('Task2', sampleExecuteAllAsync(5, new Error('Previously failed Task2')));
+    const processOneTaskDefs = [taskDef1];
+    const processAllTaskDefs = [taskDef2];
+
+    // Process the event
+    try {
+      const context = createContext(undefined, undefined, undefined, event, awsContext);
+
+      // The processing phase should complete at a bit after 20 ms (10 ms to "load" + 10 ms to run tasks), but if not
+      // force a processing timeout at 99% of 40 ms (i.e. at ~39 ms), which only leaves between 1 and 20 ms for the
+      // finalising phase, which includes a 10 ms "save", to wrap up, which seems to be insufficient enough to always
+      // trigger a time out in the finalising phase
+      context.streamProcessing.timeoutAtPercentageOfRemainingTime = 0.99;
+
+      // Simulate a previous run, which has taken both tasks to 6 (i.e. one before max)
+      const getResult = undefined;
+      const updateResult = {};
+      configureKinesisAndDynamoDBDocClient(t, context, prefix, undefined, 20, {
+        get: {result: getResult},
+        put: {result: undefined, validateArgs: validatePutParams},
+        update: {result: updateResult, validateArgs: validateUpdateParams}
+      });
+
+      const promise = consumer.processStreamEvent(event, processOneTaskDefs, processAllTaskDefs, context);
+
+      if (Promises.isPromise(promise)) {
+        t.pass(`processStreamEvent returned a promise`);
+      } else {
+        t.fail(`processStreamEvent should have returned a promise`);
+      }
+
+      t.equal(context.region, region, `context.region must be ${region}`);
+      t.equal(context.stage, 'dev', `context.stage must be dev`);
+      t.equal(context.awsContext, awsContext, `context.awsContext must be given awsContext`);
+
+      promise
+        .then(batch => {
+          t.fail(`processStreamEvent must NOT resolve with batch (${batch.shardOrEventID}) ${stringify(batch)}`);
+          t.end();
+        })
+        .catch(err => {
+          t.pass(`processStreamEvent must reject with error (${err})`);
+
+          const batch = err.batch;
+          const messages = batch.messages;
+          // const batchState = batch.states.get(batch);
+
+          t.equal(messages.length, 1, `processStreamEvent batch must have ${1} messages`);
+          t.equal(batch.unusableRecords.length, u, `processStreamEvent batch must have ${u} unusable records`);
+          t.equal(batch.undiscardedUnusableRecords.length, u, `processStreamEvent batch must have ${u} undiscarded unusable records`);
+          t.equal(batch.rejectedMessages.length, 0, `processStreamEvent batch must have ${0} rejected messages`);
+          t.equal(batch.undiscardedRejectedMessages.length, 0, `processStreamEvent batch must have ${0} undiscarded rejected messages`);
+          t.equal(batch.incompleteMessages.length, 1, `processStreamEvent batch must have ${1} incomplete messages`);
+
+          t.ok(err instanceof FatalError, `processStreamEvent error must be an instance of FatalError`);
+          t.ok(err.cause instanceof FinalisedError, `processStreamEvent error.cause must be an instance of FinalisedError`);
+
+          t.end();
         })
         .catch(err => {
           t.fail(`processStreamEvent should NOT have failed (${stringify(err)})`, err);

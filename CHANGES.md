@@ -1,5 +1,8 @@
 ## Changes
 
+### 2.1.9
+- Updated dependencies to synchronise with changes & fixes in version 2.1.9 of `aws-stream-consumer-core`
+
 ### 2.1.6
 - Updated dependencies
 
